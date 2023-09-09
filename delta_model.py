@@ -1,5 +1,6 @@
 import yfinance as yf
 from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
 
 class DeltaModel:
     def __init__(self, start_date, end_date, symbols):
@@ -34,4 +35,29 @@ class DeltaModel:
 
     def get_predictions(self):
         return self.predicted_delta
+
+    def plot_regression(self):
+        for symbol in self.symbols:
+            stock_data = self.training_data[symbol]
+
+            # We'll use all data except the last row (last day) as training data
+            X_train = stock_data.iloc[:-1][["Open", "High", "Low", "Volume"]]
+            y_train = stock_data.iloc[:-1]["delta"]
+            
+            # Training the model
+            model = LinearRegression().fit(X_train, y_train)
+
+            # Predict using the trained model
+            predicted_deltas = model.predict(X_train)
+
+            # Plotting
+            plt.figure(figsize=(12, 6))
+            plt.plot(stock_data.index[:-1], y_train, label='True Deltas', color='blue')
+            plt.plot(stock_data.index[:-1], predicted_deltas, label='Predicted Deltas', linestyle='--', color='red')
+            plt.title(f"Regression for {symbol}")
+            plt.xlabel("Date")
+            plt.ylabel("Delta")
+            plt.legend()
+            plt.grid(True)
+            plt.show()
 
