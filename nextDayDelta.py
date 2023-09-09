@@ -1,6 +1,8 @@
 import yfinance as yf
 from sklearn.linear_model import LinearRegression
 
+# This is v1. Its only here as a memory now. If you want to use the program run the delta_cli.py file 
+
 symbols = ["AAPL", "MSFT", "GOOGL", "AMZN"]
 
 training_data = {}
