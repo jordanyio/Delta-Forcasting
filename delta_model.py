@@ -1,6 +1,13 @@
 import yfinance as yf
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+import mpld3
+import matplotlib
+import base64
+import io
+
+matplotlib.use('Agg')
+
 
 class DeltaModel:
     def __init__(self, start_date, end_date, symbols):
@@ -37,6 +44,7 @@ class DeltaModel:
         return self.predicted_delta
 
     def plot_regression(self):
+        plots = {}
         for symbol in self.symbols:
             stock_data = self.training_data[symbol]
 
@@ -59,5 +67,13 @@ class DeltaModel:
             plt.ylabel("Delta")
             plt.legend()
             plt.grid(True)
-            plt.show()
+            buf = io.BytesIO()
+            plt.savefig(buf, format="png")
+            buf.seek(0)
+            image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+            plots[symbol] = image_base64
+            plt.close()
+
+          
+        return plots    
 
