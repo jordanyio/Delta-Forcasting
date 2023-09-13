@@ -9,15 +9,18 @@ CORS(app)
 @app.route('/get-plot/<symbol>', methods=['GET'])
 def get_plot(symbol):
     
-    predictor = DeltaModel((datetime.today() - timedelta(days=31)).strftime('%Y-%m-%d'), 
-                           (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d'), 
-                           [symbol])
+    predictor = DeltaModel(
+        (datetime.today() - timedelta(days=31)).strftime('%Y-%m-%d'), 
+        (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d'), 
+        [symbol]
+    )
     predictor.fetch_and_prepare_data()
     predictor.train_and_predict()
     plots = predictor.plot_regression()
 
-    image_base64 = plots.get(symbol, "")
-    return jsonify({"plot": f"data:image/png;base64,{image_base64}"})
+    plot_json = plots.get(symbol, "")
+    return jsonify({"plot": plot_json})
+
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import mpld3
 import matplotlib
 import base64
 import io
+import plotly.graph_objects as go
 
 matplotlib.use('Agg')
 
@@ -67,13 +68,12 @@ class DeltaModel:
             plt.ylabel("Delta")
             plt.legend()
             plt.grid(True)
-            buf = io.BytesIO()
-            plt.savefig(buf, format="png")
-            buf.seek(0)
-            image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
-            plots[symbol] = image_base64
-            plt.close()
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=stock_data.index[:-1], y=y_train, mode='lines', name='True Deltas'))
+            fig.add_trace(go.Scatter(x=stock_data.index[:-1], y=predicted_deltas, mode='lines', name='Predicted Deltas', line=dict(dash='dash')))
+            
+            # Convert Plotly plot to JSON
+            plots[symbol] = fig.to_json()
 
           
-        return plots    
-
+        return plots 
