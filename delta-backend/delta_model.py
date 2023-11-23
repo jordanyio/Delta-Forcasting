@@ -1,5 +1,6 @@
 import yfinance as yf
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
 import matplotlib.pyplot as plt
 import mpld3
 import matplotlib
@@ -46,6 +47,7 @@ class DeltaModel:
 
     def plot_regression(self):
         plots = {}
+        accuracies = {}
         for symbol in self.symbols:
             stock_data = self.training_data[symbol]
 
@@ -59,19 +61,28 @@ class DeltaModel:
             # Predict using the trained model
             predicted_deltas = model.predict(X_train)
 
+            # Calculate R-squared
+            r_squared = r2_score(y_train, predicted_deltas)
+            accuracies[symbol] = r_squared
+
             # Plotting
             plt.figure(figsize=(12, 6))
-            plt.plot(stock_data.index[:-1], y_train, label='True Deltas', color='blue')
-            plt.plot(stock_data.index[:-1], predicted_deltas, label='Predicted Deltas', linestyle='--', color='red')
-            plt.title(f"Regression for {symbol}")
+            plt.plot(stock_data.index[:-1], y_train, label='True', color='blue')
+            plt.plot(stock_data.index[:-1], predicted_deltas, label='Predicted', linestyle='--', color='red')
             plt.xlabel("Date")
             plt.ylabel("Delta")
             plt.legend()
             plt.grid(True)
+           
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=stock_data.index[:-1], y=y_train, mode='lines', name='True Deltas'))
-            fig.add_trace(go.Scatter(x=stock_data.index[:-1], y=predicted_deltas, mode='lines', name='Predicted Deltas', line=dict(dash='dash')))
             
+            fig.add_trace(go.Scatter(x=stock_data.index[:-1], y=y_train, mode='lines', name='True'))
+            fig.add_trace(go.Scatter(x=stock_data.index[:-1], y=predicted_deltas, mode='lines', name='Predicted', line=dict(dash='dash')))
+            
+            fig.update_layout(height=800) 
+            fig.update_layout(font_color="white")
+            fig.update_layout(title=f"Regression for {symbol} (R-squared: {r_squared:.4f})")
+
             # Convert Plotly plot to JSON
             plots[symbol] = fig.to_json()
 
