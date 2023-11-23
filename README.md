@@ -1,12 +1,14 @@
 # Delta-Forcasting
-The script retrieves historical stock data for each symbol, calculates the daily delta, and trains a linear regression model. 
-It then uses the trained model to predict the delta for the next day based on the most recent data.
+The app retrieves historical stock for any ticker, and trains a linear regression model with that data. Then it plots a chart that displays the true deltas vs the predicted deltas. 
 
 Python Flask Backend serving charts and data. 
-BootstrapVue Front end for simplicity. 
+BootstrapVue Front end. 
 
 # How to use
-Run the cli: delta_cli.py
+Run server.py
+npm run serve in the vue project
+
+model.py is the engine.
 
 # Old versions are present
-nextDayDelta.py is v1. It has been deprecated. 
+ignore other files.
