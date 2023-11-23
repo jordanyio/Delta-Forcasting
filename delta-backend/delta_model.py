@@ -66,13 +66,13 @@ class DeltaModel:
             accuracies[symbol] = r_squared
 
             # Plotting
-            plt.figure(figsize=(12, 6))
-            plt.plot(stock_data.index[:-1], y_train, label='True', color='blue')
-            plt.plot(stock_data.index[:-1], predicted_deltas, label='Predicted', linestyle='--', color='red')
-            plt.xlabel("Date")
-            plt.ylabel("Delta")
-            plt.legend()
-            plt.grid(True)
+            # plt.figure(figsize=(12, 6))
+            # plt.plot(stock_data.index[:-1], y_train, label='True', color='blue')
+            # plt.plot(stock_data.index[:-1], predicted_deltas, label='Predicted', linestyle='--', color='red')
+            # plt.xlabel("Date")
+            # plt.ylabel("Delta")
+            # plt.legend()
+            # plt.grid(True)
            
             fig = go.Figure()
             
