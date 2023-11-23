@@ -5,7 +5,7 @@ Python Flask Backend serving charts and data.
 BootstrapVue Front end. 
 
 # How to use
-Run server.py
+Run server.py and 
 npm run serve in the vue project
 
 model.py is the engine.
